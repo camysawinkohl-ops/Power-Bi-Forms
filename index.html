@@ -4,25 +4,34 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Resumen DAX – Power BI</title>
+
   <style>
     :root{
-      --bg:#0b1020; --card:#121a33; --text:#e8ecff; --muted:#b7c0ff;
-      --accent:#7aa2ff; --accent2:#53d7c7;
-      --codebg:#0a0f1f; --border:rgba(255,255,255,.10);
-      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --bg:#ff4fd8;                 /* Rosa Barbie */
+      --card:rgba(255,255,255,.88); /* Cards blancas */
+      --text:#000000;               /* Letras negras */
+      --muted:#222222;              /* Texto secundario */
+      --accent:#000000;             /* Acentos */
+      --codebg:rgba(255,255,255,.70);
+      --border:rgba(0,0,0,.18);
+      --shadow: 0 10px 30px rgba(0,0,0,.18);
     }
-    *{box-sizing:border-box}
+
+    *{ box-sizing:border-box; }
+
     body{
       margin:0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: radial-gradient(1200px 800px at 15% 10%, #18255a 0%, var(--bg) 55%);
-      color:var(--text);
+      background: var(--bg);
+      color: var(--text);
       line-height:1.5;
       padding:22px;
     }
-    .container{max-width:980px;margin:0 auto}
+
+    .container{ max-width:980px; margin:0 auto; }
+
     header{
-      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.02));
+      background: var(--card);
       border:1px solid var(--border);
       border-radius:18px;
       padding:18px 18px 14px;
@@ -30,8 +39,9 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(6px);
     }
-    h1{margin:0 0 6px 0; font-size:22px}
-    .sub{color:var(--muted); margin:0}
+
+    h1{ margin:0 0 6px 0; font-size:22px; }
+    .sub{ color:var(--muted); margin:0; }
 
     /* Search bar */
     .searchWrap{
@@ -41,42 +51,52 @@
       flex-wrap:wrap;
       align-items:center;
     }
+
     .search{
       flex:1;
       min-width:240px;
       display:flex;
       align-items:center;
       gap:10px;
-      background: rgba(0,0,0,.18);
+      background: rgba(255,255,255,.70);
       border:1px solid var(--border);
       border-radius:14px;
       padding:10px 12px;
     }
+
     .search input{
       width:100%;
       border:0;
       outline:none;
       background:transparent;
-      color:var(--text);
+      color:#000;
       font-size:14px;
     }
+
     .btn{
       border:1px solid var(--border);
-      background: rgba(0,0,0,.18);
-      color:var(--text);
+      background: rgba(255,255,255,.70);
+      color:#000;
       padding:10px 12px;
       border-radius:14px;
       cursor:pointer;
       font-size:14px;
     }
-    .btn:hover{border-color: rgba(122,162,255,.6)}
-    .hint{color:var(--muted); font-size:12px; margin:6px 0 0 0}
+
+    .btn:hover{
+      border-color: rgba(0,0,0,.40);
+      filter: brightness(0.98);
+    }
+
+    .hint{ color:var(--muted); font-size:12px; margin:6px 0 0 0; }
+
     .meta{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
       margin-top:10px;
     }
+
     .pill{
       display:inline-block;
       padding:3px 10px;
@@ -84,34 +104,38 @@
       border-radius:999px;
       color:var(--muted);
       font-size:12px;
-      background: rgba(0,0,0,.12);
+      background: rgba(255,255,255,.65);
     }
 
     .card{
-      background: rgba(18,26,51,.78);
+      background: var(--card);
       border:1px solid var(--border);
       border-radius:18px;
       padding:16px 16px;
       margin:12px 0;
       box-shadow: var(--shadow);
     }
-    h2{margin:0 0 10px 0; font-size:18px}
+
+    h2{ margin:0 0 10px 0; font-size:18px; }
     h3{
       margin:14px 0 6px 0;
       font-size:15px;
-      color:#dfe6ff;
+      color:#000;
       display:flex;
       align-items:center;
       gap:8px;
       flex-wrap:wrap;
     }
-    .need{color:var(--muted); margin:6px 0 10px 0}
+
+    .need{ color:var(--muted); margin:6px 0 10px 0; }
+
     .note{
-      border-left:3px solid var(--accent);
+      border-left:3px solid #000;
       padding-left:10px;
       color:var(--muted);
       margin:10px 0 0 0;
     }
+
     pre{
       background: var(--codebg);
       border:1px solid var(--border);
@@ -119,25 +143,28 @@
       padding:12px;
       overflow:auto;
       margin:10px 0 0 0;
+      color:#000;
     }
+
     code, pre{
       font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
       font-size: 13px;
     }
-    ul{margin:8px 0 0 18px}
+
+    ul{ margin:8px 0 0 18px; }
 
     .footer{
       color:var(--muted);
       font-size:13px;
       margin:18px 0 6px;
       text-align:center;
-      opacity:.9;
+      opacity:.95;
     }
 
     /* Highlight match */
     mark{
-      background: rgba(83,215,199,.22);
-      color: var(--text);
+      background: rgba(0,0,0,.12);
+      color:#000;
       padding: 0 2px;
       border-radius: 4px;
     }
@@ -146,23 +173,24 @@
     .nores{
       display:none;
       padding:14px;
-      border:1px dashed rgba(255,255,255,.22);
+      border:1px dashed rgba(0,0,0,.35);
       border-radius:14px;
       color:var(--muted);
       text-align:center;
       margin-top:12px;
+      background: rgba(255,255,255,.65);
     }
 
-    /* Small screens */
     @media (max-width:520px){
-      body{padding:14px}
-      header{padding:16px}
+      body{ padding:14px; }
+      header{ padding:16px; }
     }
   </style>
 </head>
 
 <body>
   <div class="container">
+
     <header>
       <h1>📊 Resumen práctico de fórmulas DAX – Power BI</h1>
       <p class="sub">Chuleta para todos: <b>qué datos necesitás</b> + ejemplos copiables.</p>
@@ -184,6 +212,23 @@
 
       <p class="note">⚠️ Para Time Intelligence necesitás una tabla <b>Calendario</b> marcada como <i>Date table</i> y relacionada por fecha con la tabla de hechos.</p>
     </header>
+
+    <!-- 🤖 AI Card (fuera del header para que quede prolijo) -->
+    <section class="card" id="aiCard">
+      <h2>🤖 Preguntale a la IA (DAX)</h2>
+
+      <div class="search" style="margin-top:10px">
+        💬 <input id="aiQ" type="text" placeholder="Ej: Rolling 3M sin mes actual por cliente" />
+      </div>
+
+      <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn" id="askBtn">Preguntar</button>
+        <button class="btn" id="aiClearBtn">Limpiar</button>
+      </div>
+
+      <p class="hint" id="aiStatus" style="margin-top:8px"></p>
+      <pre style="margin-top:10px"><code id="aiAnswer">Acá va a aparecer la respuesta…</code></pre>
+    </section>
 
     <div class="card dax-section" data-tags="convenciones tablas columnas calendario date table">
       <h2>✅ Convenciones usadas en los ejemplos</h2>
@@ -347,6 +392,9 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
 
   <script>
     (function(){
+      // -----------------------------
+      // 🔎 Buscador
+      // -----------------------------
       var input = document.getElementById('q');
       var clearBtn = document.getElementById('clearBtn');
       var sections = document.querySelectorAll('.dax-section');
@@ -356,7 +404,6 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
         return (s || '').toLowerCase().replace(/\s+/g,' ').trim();
       }
 
-      // remove previous highlights
       function clearMarks(el){
         var marks = el.querySelectorAll('mark');
         for (var i=0; i<marks.length; i++){
@@ -366,19 +413,16 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
         }
       }
 
-      // highlight in text nodes (simple, safe)
       function highlight(el, q){
         if(!q) return;
-        // only highlight in headings + code blocks + paragraphs/lists
         var targets = el.querySelectorAll('h2, h3, .need, pre, li, p');
+        var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        var re = new RegExp('(' + escaped + ')', 'ig');
+
         for (var i=0; i<targets.length; i++){
           var node = targets[i];
-          // skip if already too big
           clearMarks(node);
           var html = node.innerHTML;
-          // avoid breaking code formatting too much: minimal replace
-          // (works fine for this simple page)
-          var re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'ig');
           node.innerHTML = html.replace(re, '<mark>$1</mark>');
         }
       }
@@ -389,7 +433,6 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
 
         for (var i=0; i<sections.length; i++){
           var s = sections[i];
-          // reset highlights
           clearMarks(s);
 
           var hay = norm(s.getAttribute('data-tags')) + ' ' + norm(s.textContent);
@@ -398,10 +441,10 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
           s.style.display = ok ? '' : 'none';
           if(ok){
             shown++;
-            // highlight only when searching
             if(q !== '') highlight(s, q);
           }
         }
+
         nores.style.display = (q !== '' && shown === 0) ? 'block' : 'none';
       }
 
@@ -412,8 +455,60 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
         input.focus();
       });
 
-      // initial
       filter();
+
+
+      // -----------------------------
+      // 🤖 IA (POST al Worker)
+      // -----------------------------
+      const AI_ENDPOINT = "https://proud-scene-6bd7.camysawinkohl.workers.dev/"; // <-- CAMBIAR por tu URL real
+
+      const askBtn = document.getElementById("askBtn");
+      const aiClearBtn = document.getElementById("aiClearBtn");
+      const aiQ = document.getElementById("aiQ");
+      const aiStatus = document.getElementById("aiStatus");
+      const aiAnswer = document.getElementById("aiAnswer");
+
+      async function askAI(){
+        const qText = (aiQ.value || "").trim();
+        if(!qText){
+          aiStatus.textContent = "Escribí una pregunta 🙂";
+          return;
+        }
+
+        aiStatus.textContent = "Pensando…";
+        aiAnswer.textContent = "";
+
+        try{
+          const r = await fetch(AI_ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ question: qText })
+          });
+
+          const data = await r.json();
+          if(!r.ok) throw new Error(JSON.stringify(data));
+
+          aiAnswer.textContent = data.answer || "Sin respuesta.";
+          aiStatus.textContent = "";
+        } catch(err){
+          aiStatus.textContent = "Error llamando a la IA.";
+          aiAnswer.textContent = String(err);
+        }
+      }
+
+      if(askBtn) askBtn.addEventListener("click", askAI);
+      if(aiQ) aiQ.addEventListener("keydown", (e) => {
+        if(e.key === "Enter") askAI();
+      });
+
+      if(aiClearBtn) aiClearBtn.addEventListener("click", () => {
+        aiQ.value = "";
+        aiAnswer.textContent = "Acá va a aparecer la respuesta…";
+        aiStatus.textContent = "";
+        aiQ.focus();
+      });
+
     })();
   </script>
 </body>
