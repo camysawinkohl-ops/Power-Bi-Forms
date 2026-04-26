@@ -489,7 +489,9 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
           const data = await r.json();
           if(!r.ok) throw new Error(JSON.stringify(data));
 
-          aiAnswer.textContent = data.answer || "Sin respuesta.";
+          aiAnswer.textContent = data.answer
+  || (data.error ? (data.error + "\n" + JSON.stringify(data.details || {}, null, 2)) : "")
+  || "Sin respuesta.";
           aiStatus.textContent = "";
         } catch(err){
           aiStatus.textContent = "Error llamando a la IA.";
