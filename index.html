@@ -400,67 +400,80 @@ RANKX ( ALL ( Ventas[Cliente] ), [Ventas Totales], , DESC )</code></pre>
       // -----------------------------
       // 🔎 Buscador
       // -----------------------------
-      var input = document.getElementById('q');
-      var clearBtn = document.getElementById('clearBtn');
-      var sections = document.querySelectorAll('.dax-section');
-      var nores = document.getElementById('nores');
+      
+  const input = document.getElementById("q");
+  const clearBtn = document.getElementById("clearBtn");
+  const nores = document.getElementById("nores");
 
-      function norm(s){
-        return (s || '').toLowerCase().replace(/\s+/g,' ').trim();
+  function getSections(){
+    return Array.from(document.querySelectorAll(".dax-section"));
+  }
+
+  function norm(s){
+    return (s || "").toLowerCase().replace(/\s+/g," ").trim();
+  }
+
+  function escapeRegExp(s){
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function clearMarks(root){
+    const marks = root.querySelectorAll("mark");
+    marks.forEach(m => m.replaceWith(document.createTextNode(m.textContent)));
+  }
+
+  function highlight(root, q){
+    if(!q) return;
+    const targets = root.querySelectorAll("h2, h3, .need, pre, li, p");
+    const re = new RegExp("(" + escapeRegExp(q) + ")", "ig");
+
+    targets.forEach(node => {
+      clearMarks(node);
+      node.innerHTML = node.innerHTML.replace(re, "<mark>$1</mark>");
+    });
+  }
+
+  function filter(){
+    const sections = getSections();
+    const q = norm(input.value);
+    let shown = 0;
+
+    sections.forEach(s => {
+      clearMarks(s);
+      const hay =
+        norm(s.getAttribute("data-tags")) + " " +
+        norm(s.textContent);
+
+      const ok = (q === "") || hay.includes(q);
+      s.style.display = ok ? "" : "none";
+
+      if(ok){
+        shown++;
+        if(q) highlight(s, q);
       }
+    });
 
-      function clearMarks(el){
-        var marks = el.querySelectorAll('mark');
-        for (var i=0; i<marks.length; i++){
-          var m = marks[i];
-          var txt = document.createTextNode(m.textContent);
-          m.parentNode.replaceChild(txt, m);
-        }
-      }
+    if(nores){
+      nores.style.display = (q && shown === 0) ? "block" : "none";
+    }
+  }
 
-      function highlight(el, q){
-        if(!q) return;
-        var targets = el.querySelectorAll('h2, h3, .need, pre, li, p');
-        var escaped = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-        var re = new RegExp('(' + escaped + ')', 'ig');
+  if(input){
+    input.addEventListener("input", filter);
+  }
 
-        for (var i=0; i<targets.length; i++){
-          var node = targets[i];
-          clearMarks(node);
-          var html = node.innerHTML;
-          node.innerHTML = html.replace(re, '<mark>$1</mark>');
-        }
-      }
-
-      function filter(){
-        var q = norm(input.value);
-        var shown = 0;
-
-        for (var i=0; i<sections.length; i++){
-          var s = sections[i];
-          clearMarks(s);
-
-          var hay = norm(s.getAttribute('data-tags')) + ' ' + norm(s.textContent);
-          var ok = (q === '') || (hay.indexOf(q) !== -1);
-
-          s.style.display = ok ? '' : 'none';
-          if(ok){
-            shown++;
-            if(q !== '') highlight(s, q);
-          }
-        }
-
-        nores.style.display = (q !== '' && shown === 0) ? 'block' : 'none';
-      }
-
-      input.addEventListener('input', filter);
-      clearBtn.addEventListener('click', function(){
-        input.value = '';
-        filter();
-        input.focus();
-      });
-
+  if(clearBtn){
+    clearBtn.addEventListener("click", () => {
+      input.value = "";
       filter();
+      input.focus();
+    });
+  }
+
+  // primera ejecución
+  filter();
+})();
+
 
 
       // -----------------------------
